@@ -8,6 +8,7 @@ import it.epicode.BW2_EpicEnergyServices.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -33,18 +34,18 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        try {
-//            provinceService.importProvincesFromCSV("province-italiane.csv");
-//        } catch (IOException | CsvException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            townService.importTownsFromCSV("comuni-italiani.csv");
-//        } catch (IOException | CsvException e) {
-//            e.printStackTrace();
-//        }
-//
+      /* try {
+           provinceService.importProvincesFromCSV("province-italiane.csv");
+       } catch (IOException | CsvException e) {
+           e.printStackTrace();
+       }
+
+       try {
+           townService.importTownsFromCSV("comuni-italiani.csv");
+       } catch (IOException | CsvException e) {
+           e.printStackTrace();
+       }*/
+
         /*System.out.println(clientService.orderClientsBySocietyName());*/
         /*System.out.println(clientService.orderClientsByTotalSales());*/
         /*System.out.println(clientService.orderClientsByDate());*/
@@ -86,11 +87,23 @@ public class DataLoader implements CommandLineRunner {
             System.out.println(turnover);
         }*/
 
-        Page<Turnover> turnoverPage3 = turnoverService.filterTurnoversByClient(1, 0);
+        /*Page<Turnover> turnoverPage3 = turnoverService.filterTurnoversByClientSocietyName("Tunia", PageRequest.of(0, 10));
         List<Turnover> turnovers = turnoverPage3.getContent();
         for (Turnover turnover : turnovers) {
             System.out.println(turnover);
-        }
+        }*/
+
+        /*Page<Turnover> turnoverPage3 = turnoverService.filterTurnoversByYear(2023, 0);
+        List<Turnover> turnovers = turnoverPage3.getContent();
+        for (Turnover turnover : turnovers) {
+            System.out.println(turnover);
+        }*/
+
+        /*Page<Turnover> turnoverPage3 = turnoverService.filterTurnoversByTotalImportRange(1600, 1700, 0);
+        List<Turnover> turnovers = turnoverPage3.getContent();
+        for (Turnover turnover : turnovers) {
+            System.out.println(turnover);
+        }*/
 
 //        /*System.out.println(provinceService.getProvinceByName("Torino"));*/
     }

@@ -1,9 +1,11 @@
 package it.epicode.BW2_EpicEnergyServices.Service;
 
 import it.epicode.BW2_EpicEnergyServices.Dto.TurnoverDto;
+import it.epicode.BW2_EpicEnergyServices.Entity.Client;
 import it.epicode.BW2_EpicEnergyServices.Entity.Turnover;
 import it.epicode.BW2_EpicEnergyServices.Enums.TurnoverState;
 import it.epicode.BW2_EpicEnergyServices.Exceptions.TurnoverNotFoundException;
+import it.epicode.BW2_EpicEnergyServices.Repository.ClientRepository;
 import it.epicode.BW2_EpicEnergyServices.Repository.TurnoverRepository;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,6 +22,9 @@ import java.util.Optional;
 
 @Service
 public class TurnoverService {
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private TurnoverRepository turnoverRepository;
@@ -73,11 +78,15 @@ public class TurnoverService {
         return "Turnover with id=" + id + " correctly deleted!";
     }
 
-    public Page<Turnover> filterTurnoversByClient(int clientId, int page) {
-        int size = 15; // Valore predefinito
-        Pageable pageable = PageRequest.of(page, size, Sort.by("clientName"));
-        return turnoverRepository.findByClientSocietyName(clientId, pageable);
-    }
+    /*public Page<Turnover> filterTurnoversByClientSocietyName(String societyName, Pageable pageable) {
+        Client client = clientRepository.findBySocietyName(societyName);
+        if (client != null) {
+            return turnoverRepository.findByClientSocietyName(client.getSocietyName(), pageable);
+        } else {
+            // Gestione caso in cui il cliente non è trovato
+            return null;
+        }
+    }*/
 
     public Page<Turnover> filterTurnoversByTurnoverState(TurnoverState turnoverState, int page) {
         int size = 15; // Valore predefinito

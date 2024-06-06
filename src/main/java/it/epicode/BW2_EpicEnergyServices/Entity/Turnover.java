@@ -11,9 +11,8 @@ import java.time.LocalDate;
 @Entity
 public class Turnover {
 
-@Id
-@GeneratedValue
-
+    @Id
+    @GeneratedValue
     private int id;
     private Long turnoverCode;
 
@@ -26,6 +25,6 @@ public class Turnover {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference
     private Client client;
+
 }

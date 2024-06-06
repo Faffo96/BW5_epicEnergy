@@ -32,6 +32,7 @@ public class UserService {
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
         user.setAvatar(userDto.getAvatar());
+        user.setRole(Role.USER);
 
         userRepository.save(user);
         System.out.println("User with id " + user.getUserId() + " correctly saved!");

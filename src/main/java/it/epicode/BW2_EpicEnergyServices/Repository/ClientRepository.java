@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     Optional<Client> findByEmail(String email);
 
+    Client findBySocietyName(String societyName);
+
     Page<Client> findByTotalSalesGreaterThan(double totalSales, Pageable pageable);
 
     Page<Client> findByAddDateAfter(LocalDate addDate, Pageable pageable);
