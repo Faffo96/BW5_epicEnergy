@@ -72,5 +72,37 @@ public class TurnoverService {
         turnoverRepository.deleteById(id);
         return "Turnover with id=" + id + " correctly deleted!";
     }
+
+    public Page<Turnover> filterTurnoversByClient(int clientId, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("clientName"));
+        return turnoverRepository.findByClientSocietyName(clientId, pageable);
+    }
+
+    public Page<Turnover> filterTurnoversByTurnoverState(TurnoverState turnoverState, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("turnoverState"));
+        return turnoverRepository.findByTurnoverState(turnoverState, pageable);
+    }
+
+    public Page<Turnover> filterTurnoversByDate(LocalDate date, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date"));
+        return turnoverRepository.findByDate(date, pageable);
+    }
+
+    public Page<Turnover> filterTurnoversByYear(int year, int page) {
+        int size = 15; // Valore predefinito
+        LocalDate startDate = LocalDate.of(year, 1, 1);
+        LocalDate endDate = LocalDate.of(year, 12, 31);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date"));
+        return turnoverRepository.findByDateBetween(startDate, endDate, pageable);
+    }
+
+    public Page<Turnover> filterTurnoversByTotalImportRange(double minTotal, double maxTotal, int page) {
+        int size = 15; // Valore predefinito
+        Pageable pageable = PageRequest.of(page, size, Sort.by("total"));
+        return turnoverRepository.findByTotalBetween(minTotal, maxTotal, pageable);
+    }
 }
 

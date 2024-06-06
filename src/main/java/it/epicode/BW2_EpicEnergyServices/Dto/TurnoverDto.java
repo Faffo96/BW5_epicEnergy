@@ -1,5 +1,7 @@
 package it.epicode.BW2_EpicEnergyServices.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.epicode.BW2_EpicEnergyServices.Entity.Client;
 import it.epicode.BW2_EpicEnergyServices.Enums.TurnoverState;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,4 +26,7 @@ public class TurnoverDto {
     @Min(1)
 
     private double total;
+
+    @JsonIgnore
+    private Client client;
 }

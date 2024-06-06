@@ -1,5 +1,6 @@
 package it.epicode.BW2_EpicEnergyServices.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import it.epicode.BW2_EpicEnergyServices.Enums.TurnoverState;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,4 +23,9 @@ public class Turnover {
     private TurnoverState turnoverState;
 
     private double total;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    @JsonBackReference
+    private Client client;
 }

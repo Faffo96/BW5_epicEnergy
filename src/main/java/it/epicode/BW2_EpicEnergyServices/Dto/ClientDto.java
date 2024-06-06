@@ -1,5 +1,6 @@
 package it.epicode.BW2_EpicEnergyServices.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.BW2_EpicEnergyServices.Entity.Address;
 import it.epicode.BW2_EpicEnergyServices.Enums.ClientType;
 
@@ -53,7 +54,7 @@ public class ClientDto {
 
     private String societyLogo;
 
-
+    @JsonIgnore
     private List<Address> address;
 
 
