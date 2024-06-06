@@ -25,6 +25,7 @@ public class Turnover {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonBackReference
     private Client client;
 
 }

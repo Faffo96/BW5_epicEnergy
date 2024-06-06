@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvException;
 import it.epicode.BW2_EpicEnergyServices.Entity.Client;
 import it.epicode.BW2_EpicEnergyServices.Entity.Turnover;
 import it.epicode.BW2_EpicEnergyServices.Enums.TurnoverState;
+import it.epicode.BW2_EpicEnergyServices.Repository.ClientRepository;
 import it.epicode.BW2_EpicEnergyServices.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +18,8 @@ import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private TownService townService;
@@ -87,11 +90,15 @@ public class DataLoader implements CommandLineRunner {
             System.out.println(turnover);
         }*/
 
-        /*Page<Turnover> turnoverPage3 = turnoverService.filterTurnoversByClientSocietyName("Tunia", PageRequest.of(0, 10));
+        Page<Turnover> turnoverPage3 = turnoverService.findTurnoverBySocietyName("Tunia", 0, 15);
         List<Turnover> turnovers = turnoverPage3.getContent();
         for (Turnover turnover : turnovers) {
             System.out.println(turnover);
-        }*/
+        }
+
+        /*Client client = clientRepository.findBySocietyName("tunia");
+        System.out.println("Client found manually: " + client);*/
+
 
         /*Page<Turnover> turnoverPage3 = turnoverService.filterTurnoversByYear(2023, 0);
         List<Turnover> turnovers = turnoverPage3.getContent();

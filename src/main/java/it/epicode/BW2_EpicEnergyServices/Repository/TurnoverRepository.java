@@ -1,5 +1,6 @@
 package it.epicode.BW2_EpicEnergyServices.Repository;
 
+import it.epicode.BW2_EpicEnergyServices.Entity.Client;
 import it.epicode.BW2_EpicEnergyServices.Entity.Turnover;
 import it.epicode.BW2_EpicEnergyServices.Enums.TurnoverState;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,8 @@ import java.util.List;
 public interface TurnoverRepository extends JpaRepository<Turnover, Integer> {
 
     /*Page<Turnover> findByClientSocietyName(@Param("societyName") String societyName, Pageable pageable);*/
+
+    Page<Turnover> findByClient(Client client, Pageable pageable);
 
     Page<Turnover> findByTurnoverState(TurnoverState turnoverState, Pageable pageable);
 

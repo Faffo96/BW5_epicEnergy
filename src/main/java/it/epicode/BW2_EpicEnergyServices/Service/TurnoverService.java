@@ -9,6 +9,7 @@ import it.epicode.BW2_EpicEnergyServices.Repository.ClientRepository;
 import it.epicode.BW2_EpicEnergyServices.Repository.TurnoverRepository;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,15 +80,21 @@ public class TurnoverService {
         return "Turnover with id=" + id + " correctly deleted!";
     }
 
-    /*public Page<Turnover> filterTurnoversByClientSocietyName(String societyName, Pageable pageable) {
-        Client client = clientRepository.findBySocietyName(societyName);
-        if (client != null) {
-            return turnoverRepository.findByClientSocietyName(client.getSocietyName(), pageable);
+    @Transactional
+    public Page<Turnover> findTurnoverBySocietyName(String societyName, int page, int size) {
+        societyName = societyName.trim().toLowerCase();
+        System.out.println("Searching for societyName: " + societyName);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Client> clients = clientRepository.findBySocietyNameContainingIgnoreCase(societyName, pageable);
+
+        if (clients.hasContent()) {
+            Client client = clients.getContent().get(0); // Prendi il primo cliente trovato
+            return turnoverRepository.findByClient(client, pageable);
         } else {
-            // Gestione caso in cui il cliente non è trovato
-            return null;
+            return Page.empty();
         }
-    }*/
+    }
 
     public Page<Turnover> filterTurnoversByTurnoverState(TurnoverState turnoverState, int page) {
         int size = 15; // Valore predefinito

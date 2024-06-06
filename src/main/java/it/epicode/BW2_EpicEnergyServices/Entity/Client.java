@@ -1,6 +1,7 @@
 package it.epicode.BW2_EpicEnergyServices.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.epicode.BW2_EpicEnergyServices.Enums.ClientType;
 import jakarta.persistence.*;
@@ -37,6 +38,7 @@ public class Client {
     private List<Address> address;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Turnover> turnoverList;
 
 
