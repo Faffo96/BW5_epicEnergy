@@ -20,7 +20,12 @@ public interface TurnoverRepository extends JpaRepository<Turnover, Integer> {
 
     /*Page<Turnover> findByClientSocietyName(@Param("societyName") String societyName, Pageable pageable);*/
 
+    @Query("SELECT t FROM Turnover t WHERE t.client.clientId = :clientId")
+    Page<Turnover> findByClientId(@Param("clientId") int clientId, Pageable pageable);
+
+/*
     Page<Turnover> findByClient(Client client, Pageable pageable);
+*/
 
     Page<Turnover> findByTurnoverState(TurnoverState turnoverState, Pageable pageable);
 

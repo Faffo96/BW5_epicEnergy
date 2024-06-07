@@ -27,6 +27,5 @@ public class TurnoverDto {
 
     private double total;
 
-    @JsonIgnore
     private Client client;
 }

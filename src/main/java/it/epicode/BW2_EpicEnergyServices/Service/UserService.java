@@ -1,5 +1,6 @@
 package it.epicode.BW2_EpicEnergyServices.Service;
 
+import com.cloudinary.Cloudinary;
 import it.epicode.BW2_EpicEnergyServices.Dto.UserDto;
 import it.epicode.BW2_EpicEnergyServices.Entity.User;
 import it.epicode.BW2_EpicEnergyServices.Enums.Role;
@@ -10,9 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +29,15 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
-    public void saveUser(UserDto userDto) {
+
+    @Autowired
+    private Cloudinary cloudinary;
+
+    public User saveUser(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
@@ -34,8 +47,11 @@ public class UserService {
         user.setAvatar(userDto.getAvatar());
         user.setRole(Role.USER);
 
+        sendRegistrationMail(user);
+
         userRepository.save(user);
         System.out.println("User with id " + user.getUserId() + " correctly saved!");
+        return user;
     }
 
     public Page<User> getAllUsers(int page, int size, String sortBy) {
@@ -72,6 +88,29 @@ public class UserService {
         User user = getUserById(id);
         userRepository.deleteById(id);
         return "User with id=" + id + " correctly deleted!";
+    }
+
+    public String PATCHUserAvatar(int userId, MultipartFile photo) throws IOException {
+        User user = getUserById(userId);
+
+        if (user != null) {
+            String url = (String) cloudinary.uploader().upload(photo.getBytes(), Collections.emptyMap()).get("url");
+
+            user.setAvatar(url);
+            userRepository.save(user);
+            return "User with id=" + userId + " updated successfully with the sent photo.";
+        } else {
+            throw new UserNotFoundException("User with id=" + userId + " not found.");
+        }
+    }
+
+    private void sendRegistrationMail(User user) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Rest Service Registration");
+        message.setText("Congratulations, " + user.getName() + " " + user.getSurname() + "! Successful registration to this rest service");
+
+        javaMailSender.send(message);
     }
 }
 

@@ -80,20 +80,13 @@ public class TurnoverService {
         return "Turnover with id=" + id + " correctly deleted!";
     }
 
-    @Transactional
-    public Page<Turnover> findTurnoverBySocietyName(String societyName, int page, int size) {
-        societyName = societyName.trim().toLowerCase();
-        System.out.println("Searching for societyName: " + societyName);
+
+    public Page<Turnover> findTurnoverByClientId(int clientId, int page, int size) {
+        System.out.println("Searching for societyName: " + clientId);
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Client> clients = clientRepository.findBySocietyNameContainingIgnoreCase(societyName, pageable);
 
-        if (clients.hasContent()) {
-            Client client = clients.getContent().get(0); // Prendi il primo cliente trovato
-            return turnoverRepository.findByClient(client, pageable);
-        } else {
-            return Page.empty();
-        }
+            return turnoverRepository.findByClientId(clientId, pageable);
     }
 
     public Page<Turnover> filterTurnoversByTurnoverState(TurnoverState turnoverState, int page) {

@@ -94,20 +94,24 @@ public class ClientService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with email " + email));
     }
 
-    public List<Client> orderClientsBySocietyName() {
-        return clientRepository.findAll(Sort.by(Sort.Direction.ASC, "societyName"));
+    public Page<Client> orderClientsBySocietyName(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "societyName"));
+        return clientRepository.findAll(pageable);
     }
 
-    public List<Client> orderClientsByTotalSales() {
-        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "totalSales"));
+    public Page<Client> orderClientsByTotalSales(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "totalSales"));
+        return clientRepository.findAll(pageable);
     }
 
-    public List<Client> orderClientsByDate() {
-        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "addDate"));
+    public Page<Client> orderClientsByDate(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "addDate"));
+        return clientRepository.findAll(pageable);
     }
 
-    public List<Client> orderClientsByLastContact() {
-        return clientRepository.findAll(Sort.by(Sort.Direction.DESC, "lastContact"));
+    public Page<Client> orderClientsByLastContact(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastContact"));
+        return clientRepository.findAll(pageable);
     }
 
     public Page<Client> filterClientsByTotalSalesGreaterThan(double totalSales, int page) {

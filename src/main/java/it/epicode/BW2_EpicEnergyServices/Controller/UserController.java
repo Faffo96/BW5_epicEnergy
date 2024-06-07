@@ -12,6 +12,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -22,13 +25,14 @@ public class UserController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveUser(@RequestBody @Validated UserDto user, BindingResult bindingResult) {
+    public UserDto saveUser(@RequestBody @Validated UserDto user, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage())
                     .reduce("", (s, s2) -> s + s2));
         }
         userService.saveUser(user);
+        return user;
     }
 
     @GetMapping("/users")
@@ -62,6 +66,11 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteUser(@PathVariable int userId) {
         return userService.deleteUser(userId);
+    }
+
+    @PatchMapping("/users/{userId}")
+    public String PATCHEmployeeAvatar(@RequestPart MultipartFile avatar, @PathVariable int userId) throws IOException {
+        return userService.PATCHUserAvatar(userId, avatar);
     }
 }
 
